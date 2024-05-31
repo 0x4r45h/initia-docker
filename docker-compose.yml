@@ -31,7 +31,7 @@ services:
       - --p2p.persistent_peers
       - ${PERSISTENT_PEERS}
       - --p2p.external-address
-      - ${EXTERNAL_IP}
+      - ${EXTERNAL_IP}:26656
     volumes:
       - ./init.sh:/init.sh
       - type: volume
