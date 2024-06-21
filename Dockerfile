@@ -11,7 +11,6 @@ WORKDIR /root
 # Make node binaries
 RUN git clone --branch $NODE_VERSION --single-branch https://github.com/initia-labs/initia.git
 WORKDIR initia
-#RUN git checkout $NODE_VERSION
 RUN make install
 
 #Make Oracle Binaries
@@ -32,6 +31,7 @@ RUN apt-get update && apt-get install -y \
     lz4 \
     git \
     iputils-ping \
+    iproute2 \
     && apt-get clean
 
 COPY --from=builder /go/bin/initiad /usr/local/bin/initiad

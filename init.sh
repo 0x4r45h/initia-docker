@@ -11,7 +11,12 @@ wget https://initia.s3.ap-southeast-1.amazonaws.com/initiation-1/genesis.json -O
 initiad config set app minimum-gas-prices "0.15uinit,0.01uusdc"
 
 #change api listen address
-initiad config set app api.address "0.0.0.0:9090"
+initiad config set app api.enable "true"
+initiad config set app api.address "tcp://0.0.0.0:1317"
+
+#change grpc listen address
+initiad config set app grpc.enable "true"
+initiad config set app grpc.address "0.0.0.0:9090"
 
 #enable oracle
 initiad config set app oracle.enabled "true"
