@@ -2,8 +2,8 @@ services:
   node:
     build:
       args:
-         NODE_VERSION: ${NODE_VERSION}
-         ORACLE_VERSION: ${ORACLE_VERSION}
+        NODE_VERSION: ${NODE_VERSION:-v0.2.21}
+        ORACLE_VERSION: ${ORACLE_VERSION:-v0.4.3}
       dockerfile: Dockerfile
       context: .
     ulimits:
@@ -22,16 +22,26 @@ services:
         max-file: "5"
     command:
       - start
+      - --api.enable
+      - --api.address
+      - "tcp://0.0.0.0:1317"
+      - --api.swagger
+      - --grpc.enable
+      - --grpc.address
+      - "0.0.0.0:9090"
+      - --grpc-web.enable
       - --p2p.laddr
       - "tcp://0.0.0.0:26656"
-      - --rpc.laddr
-      - "tcp://0.0.0.0:26657"
       - --p2p.seeds
       - ${SEEDS}
       - --p2p.persistent_peers
       - ${PERSISTENT_PEERS}
       - --p2p.external-address
       - ${EXTERNAL_IP}:${P2P_PORT}
+      - --rpc.laddr
+      - "tcp://0.0.0.0:26657"
+      - --minimum-gas-prices
+      - "0.15uinit,0.01uusdc"
     volumes:
       - ./init.sh:/init.sh
       - type: volume
@@ -43,8 +53,8 @@ services:
   oracle:
     build:
       args:
-         NODE_VERSION: ${NODE_VERSION}
-         ORACLE_VERSION: ${ORACLE_VERSION}
+        NODE_VERSION: ${NODE_VERSION:-v0.2.21}
+        ORACLE_VERSION: ${ORACLE_VERSION:-v0.4.3}
       dockerfile: Dockerfile
       context: .
     ulimits:
