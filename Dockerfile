@@ -36,8 +36,8 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=builder /go/bin/initiad /usr/local/bin/initiad
 COPY --from=builder /root/slinky/build/slinky /usr/local/bin/slinky
-COPY --from=builder /go/pkg/mod/github.com/initia-labs/movevm@v0.2.8/api/libmovevm.x86_64.so /usr/local/lib/
-COPY --from=builder /go/pkg/mod/github.com/initia-labs/movevm@v0.2.8/api/libcompiler.x86_64.so /usr/local/lib/
+COPY --from=builder /go/pkg/mod/github.com/initia-labs/movevm@v0.2.12/api/libmovevm.x86_64.so /usr/local/lib/
+COPY --from=builder /go/pkg/mod/github.com/initia-labs/movevm@v0.2.12/api/libcompiler.x86_64.so /usr/local/lib/
 
 # Ensure the library can be found by the dynamic linker
 RUN ldconfig
