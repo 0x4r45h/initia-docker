@@ -2,8 +2,8 @@ services:
   node:
     build:
       args:
-         NODE_VERSION: ${NODE_VERSION:-v0.2.21}
-         ORACLE_VERSION: ${ORACLE_VERSION:-v0.4.3}
+        NODE_VERSION: ${NODE_VERSION:-v0.2.21}
+        ORACLE_VERSION: ${ORACLE_VERSION:-v0.4.3}
       dockerfile: Dockerfile
       context: .
     ulimits:
@@ -34,6 +34,8 @@ services:
       - "tcp://0.0.0.0:26656"
       - --p2p.seeds
       - ${SEEDS}
+      - --p2p.persistent_peers
+      - ${PERSISTENT_PEERS}
       - --p2p.external-address
       - ${EXTERNAL_IP}:${P2P_PORT}
       - --rpc.laddr
