@@ -6,8 +6,13 @@ This repository is starting point to run a [Initia](https://initia.xyz/) Node/Va
 ---
 ## Getting started
 copy `.env.sample` to `.env` and fill it with your variables
+Build or Pull images    
 
-build the image 
+If you trust our images, make a pull:
+```bash
+docker compose pull
+```
+otherwise, build images:
 ```bash
 docker compose build
 ```

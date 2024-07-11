@@ -1,6 +1,5 @@
 FROM golang:1.22.2-bookworm as builder
 ARG NODE_VERSION
-ARG ORACLE_VERSION
 USER root
 RUN apt-get update && apt-get install -y \
     make \
@@ -13,12 +12,6 @@ RUN git clone --branch $NODE_VERSION --single-branch https://github.com/initia-l
 WORKDIR initia
 RUN make install
 
-#Make Oracle Binaries
-WORKDIR /root
-RUN git clone --branch $ORACLE_VERSION --single-branch https://github.com/skip-mev/slinky.git
-WORKDIR slinky
-RUN make build
-
 FROM debian:bookworm-slim AS runtime
 RUN apt-get update && apt-get install -y \
     curl \
@@ -27,7 +20,6 @@ RUN apt-get update && apt-get install -y \
     dnsutils \
     wget \
     unzip \
-    perl \
     lz4 \
     git \
     iputils-ping \
@@ -35,7 +27,6 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 COPY --from=builder /go/bin/initiad /usr/local/bin/initiad
-COPY --from=builder /root/slinky/build/slinky /usr/local/bin/slinky
 COPY --from=builder /go/pkg/mod/github.com/initia-labs/movevm@v0.2.12/api/libmovevm.x86_64.so /usr/local/lib/
 COPY --from=builder /go/pkg/mod/github.com/initia-labs/movevm@v0.2.12/api/libcompiler.x86_64.so /usr/local/lib/
 

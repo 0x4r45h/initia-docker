@@ -1,10 +1,10 @@
 services:
   node:
+    image: emberstake/initia-node:${NODE_VERSION:-v0.2.21}
     build:
       args:
         NODE_VERSION: ${NODE_VERSION:-v0.2.21}
-        ORACLE_VERSION: ${ORACLE_VERSION:-v0.4.3}
-      dockerfile: Dockerfile
+      dockerfile: docker/node/Dockerfile
       context: .
     ulimits:
       nofile:
@@ -43,7 +43,10 @@ services:
       - --minimum-gas-prices
       - "0.15uinit,0.01uusdc"
     volumes:
-      - ./init.sh:/init.sh
+      - type: bind
+        read_only: true
+        source: configs/node/init.sh
+        target: /init.sh
       - type: volume
         source: node_data
         target: /root
@@ -51,11 +54,11 @@ services:
       - "${P2P_PORT}:26656" # p2p
       - "${RPC_PORT}:26657"
   oracle:
+    image: emberstake/initia-oracle:${ORACLE_VERSION:-v0.4.3}
     build:
       args:
-        NODE_VERSION: ${NODE_VERSION:-v0.2.21}
         ORACLE_VERSION: ${ORACLE_VERSION:-v0.4.3}
-      dockerfile: Dockerfile
+      dockerfile: docker/oracle/Dockerfile
       context: .
     ulimits:
       nofile:
@@ -78,7 +81,10 @@ services:
       - --market-map-endpoint
       - node:9090
     volumes:
-      - ./oracle.json:/configs/oracle.json
+      - type: bind
+        read_only: true
+        source: configs/oracle/oracle.json
+        target: /configs/oracle.json
       - type: volume
         source: oracle_data
         target: /root
